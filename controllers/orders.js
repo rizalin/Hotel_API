@@ -8,14 +8,28 @@ const RoomType = models.room_type
 
 // Booking room
 exports.store = (req, res) => {
-    Booking.create(req.body).then(booking => {
-        res.send({
-            message: "success",
-            booking
-        })
-    }).catch(err => res.send(err));;
-};
+    RoomType.findOne({ where: { id: req.body.room_type } })
+        .then(
+            roomType => Booking.create(
+                {
+                    booking_date: req.body.booking_date,
+                    room_type: req.body.room_type,
+                    total_room: req.body.total_room,
+                    status: "Pending",
+                    booked_by: req.body.booked_by,
+                    total_price: req.body.total_room * roomType.price
 
+                }
+            ))
+        .then(booking => {
+            res.send({
+                message: "Success",
+                booking
+
+            })
+        })
+        .catch(err => res.send(err));;
+};
 
 // Confirm the payment for booking
 exports.confirm = (req, res) => {
@@ -47,14 +61,14 @@ exports.checkIn = (req, res) => {
                 attributes: ["name"]
             }]
         }]
-    }).then(event => res.send(event)).catch(err => res.send(err));
+    }).then(event => res.send({ message: "This is your booking code", event })).catch(err => res.send(err));
 };
 
 // Get all income report
 exports.income = (req, res) => {
     Income.findAll({
-        attributes: ["order_id", "income"]
-    }).then(event => res.send(event)).catch(err => res.send(err));
+        attributes: ["booking_id", "income"]
+    }).then(event => res.send({ message: "This is your income report", event })).catch(err => res.send(err));
 };
 
 // Get all booking information
@@ -72,7 +86,7 @@ exports.index = (req, res) => {
                 attributes: ["type"]
             }
         ]
-    }).then(event => res.send(event)).catch(err => res.send(err));
+    }).then(event => res.send({ message: "This is your all booking list", event })).catch(err => res.send(err));
 };
 
 
