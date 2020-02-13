@@ -10,17 +10,16 @@ const RoomType = models.room_type
 exports.store = (req, res) => {
     RoomType.findOne({ where: { id: req.body.room_type } })
         .then(
-            roomType => Booking.create(
+            (roomType => Booking.create(
                 {
                     booking_date: req.body.booking_date,
                     room_type: req.body.room_type,
                     total_room: req.body.total_room,
-                    status: "Pending",
+                    status: "pending",
                     booked_by: req.body.booked_by,
                     total_price: req.body.total_room * roomType.price
-
                 }
-            ))
+            )))
         .then(booking => {
             res.send({
                 message: "Success",
@@ -28,7 +27,7 @@ exports.store = (req, res) => {
 
             })
         })
-        .catch(err => res.send(err));;
+        .catch(err => res.send(err))
 };
 
 // Confirm the payment for booking
