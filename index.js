@@ -1,4 +1,3 @@
-require("express-group-routes");
 const bodyParser = require("body-parser");
 const express = require("express");
 
@@ -18,27 +17,26 @@ app.use(function (req, res, next) {
 
 const Controller = require("./controllers/orders");
 
+// Booking room
+app.post("/api/v1/booking", Controller.store);
 
-app.group("/api/v1", router => {
+// Confirming booking
+app.patch("/api/v1/booking/:id", Controller.confirm);
 
-    // Booking room
-    router.post("/booking", Controller.store);
+// Get booking code
+app.get("/api/v1/check_in/:id", Controller.checkIn)
 
-    // Confirming booking
-    router.patch("/booking/:id", Controller.confirm);
+// Get income report 
+app.get("/api/v1/incomes", Controller.income)
 
-    // Get booking code
-    router.get("/check_in/:id", Controller.checkIn)
+// Show all bookings
+app.get("/api/v1/bookings", Controller.index)
 
-    // Get income report 
-    router.get("/incomes", Controller.income)
-
-    // Show all bookings
-    router.get("/bookings", Controller.index)
-});
 
 app.get("/", (req, res) => {
     res.send("This is Hotel information system");
 });
 
 app.listen(port, () => console.log(`Listening from ${port}`));
+
+module.exports = app

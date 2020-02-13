@@ -47,14 +47,14 @@ exports.checkIn = (req, res) => {
                 attributes: ["name"]
             }]
         }]
-    }).then(event => res.send(event)).catch(err => res.send(err));
+    }).then(event => res.send({ message: "This is your booking code", event })).catch(err => res.send(err));
 };
 
 // Get all income report
 exports.income = (req, res) => {
     Income.findAll({
-        attributes: ["order_id", "income"]
-    }).then(event => res.send(event)).catch(err => res.send(err));
+        attributes: ["booking_id", "income"]
+    }).then(event => res.send({ message: "This is your income report", event })).catch(err => res.send(err));
 };
 
 // Get all booking information
