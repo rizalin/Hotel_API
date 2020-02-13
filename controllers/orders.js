@@ -72,7 +72,7 @@ exports.index = (req, res) => {
                 attributes: ["type"]
             }
         ]
-    }).then(event => res.send(event)).catch(err => res.send(err));
+    }).then(event => res.send({ message: "This is your all booking list", event })).catch(err => res.send(err));
 };
 
 
